@@ -6,9 +6,9 @@ from telegram import Update
 from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, filters, ContextTypes
 
 # Set your OpenAI API key and Telegram bot token
-OPENAI_API_KEY = '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'
-TELEGRAM_BOT_TOKEN = '7718275039:AAFtOtZKByTNidcBKwCGoNV74hjjNXaXj98'
-ALPHA_VANTAGE_API_KEY = 'WGIBTUVYZMKAQ0JI'
+OPENAI_API_KEY = '************************'
+TELEGRAM_BOT_TOKEN = '************************'
+ALPHA_VANTAGE_API_KEY = '***************'
 
 # Initialize OpenAI API
 openai.api_key = OPENAI_API_KEY
