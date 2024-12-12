@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audio Transcript and Translator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 50%, #fad0c4 100%);
+            color: #fff;
+            text-align: center;
+        }
+        h1 {
+            margin: 20px 0;
+            font-size: 2.5rem;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            width: 80%;
+            max-width: 500px;
+        }
+        input[type="file"], input[type="text"], input[type="submit"] {
+            padding: 10px;
+            border-radius: 5px;
+            border: none;
+            font-size: 1rem;
+        }
+        input[type="file"] {
+            background-color: #f0f0f0;
+        }
+        input[type="text"] {
+            background-color: #fff;
+        }
+        input[type="submit"] {
+            background-color: #ff9a9e;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        input[type="submit"]:hover {
+            background-color: #f0b7c1;
+        }
+        .result {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: rgba(0, 0, 0, 0.5);
+            border-radius: 8px;
+            width: 80%;
+            max-width: 600px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .result h2 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+        .result p {
+            font-size: 1rem;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        /* Loading Spinner */
+        .spinner {
+            border: 4px solid #f3f3f3; /* Light grey */
+            border-top: 4px solid #3498db; /* Blue */
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 2s linear infinite;
+            display: none; /* Initially hidden */
+            margin-top: 20px;
+        }
+
+        /* Animation for Spinner */
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+    </style>
+</head>
+<body>
+
+    <h1>Audio Transcript and Translator</h1>
+
+    <form action="/" method="POST" enctype="multipart/form-data">
+        <input type="file" name="file" accept="audio/*" required>
+        <input type="text" name="language" placeholder="Enter language (e.g., Spanish)" required>
+        <input type="submit" value="Upload">
+    </form>
+
+    <!-- Loading Spinner -->
+    <div class="spinner" id="loadingSpinner"></div>
+
+    <!-- Result section (Initially hidden, can be dynamically filled with content after form submission) -->
+    <div class="result" style="display: none;">
+        <h2>Transcript:</h2>
+        <p id="transcript">Loading transcript...</p>
+
+        <h2>Translation:</h2>
+        <p id="translation">Loading translation...</p>
+    </div>
+
+    <script>
+        // JavaScript to handle form submission and display results (after receiving data from Flask backend)
+        document.querySelector('form').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent the form from submitting
+
+            // Show the loading spinner
+            document.getElementById('loadingSpinner').style.display = 'block';
+            document.querySelector('.result').style.display = 'none'; // Hide result section while loading
+
+            const formData = new FormData(this);
+
+            fetch('/', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Hide the loading spinner and display the result section
+                document.getElementById('loadingSpinner').style.display = 'none';
+                document.querySelector('.result').style.display = 'block';
+
+                // Display the transcript and translation
+                document.querySelector('#transcript').innerText = data.transcript || 'No transcript available.';
+                document.querySelector('#translation').innerText = data.translation || 'No translation available.';
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                // Hide the spinner if there's an error
+                document.getElementById('loadingSpinner').style.display = 'none';
+            });
+        });
+    </script>
+
+</body>
+</html>
