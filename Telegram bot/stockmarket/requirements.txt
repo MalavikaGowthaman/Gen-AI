@@ -1,0 +1,5 @@
+aiogram
+openai==0.28
+python-dotenv
+python-telegram-bot==20.3
+requests
