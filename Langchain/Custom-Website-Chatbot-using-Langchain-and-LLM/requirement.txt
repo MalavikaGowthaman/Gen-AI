@@ -1,0 +1,17 @@
+langchain
+langchain-community
+langchain-core
+openai
+tiktoken
+aiofiles
+python-dotenv
+FAISS-cpu
+streamlit
+pypdf
+PyPDF2
+sentence_transformers
+tokenizers
+unstructured
+numpy==1.24.4
+nltk==3.9.1
+-e.
